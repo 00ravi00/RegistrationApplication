@@ -12,17 +12,17 @@ import java.sql.*;
 import java.util.*;
 
 public class RegistrationApplication extends JFrame implements ActionListener{
-	
+	//creating panels
 	JPanel suPl = new JPanel(null);
 	JPanel siPl = new JPanel(null);
 	JTabbedPane tbp = new JTabbedPane();
-	 
+	 // declaring variables
 	JLabel intro, FirstName, Email, CrePass, ConPass, LastName, state, Gender, email2, password2;
-	JTextField fntf, lntf, emtf, tf6, sttf, em2tf;
+	JTextField fntf, lntf, emtf, sttf, em2tf;
 	JButton btn1, btn2, btn3, btn4;
 	JPasswordField p1, p2, p3;
 	JRadioButton rdb1, rdb2;
-	
+	// constructor
 	public RegistrationApplication(){
 		
 		setVisible(true);
@@ -34,7 +34,7 @@ public class RegistrationApplication extends JFrame implements ActionListener{
 		tbp.add("SignIn", siPl);
 		add(tbp);
 		
-
+// Creating instances and Assigning to variables
         intro = new JLabel("Registration Form Application:");
         intro.setForeground(Color.blue);
         intro.setFont(new Font("Serif", Font.BOLD, 20));
@@ -78,7 +78,7 @@ public class RegistrationApplication extends JFrame implements ActionListener{
         btn3.addActionListener(this);
         btn4.addActionListener(this);
         
-        
+        // setting exact position where they should appear on panels
         intro.setBounds(100, 30, 400, 30);
         FirstName.setBounds(80, 70, 200, 30);
         LastName.setBounds(80, 110, 200, 30);
@@ -103,7 +103,7 @@ public class RegistrationApplication extends JFrame implements ActionListener{
         email2.setBounds(100, 100, 100, 30);
         p3.setBounds(330, 200, 250, 30);
         password2.setBounds(100, 200, 250, 30);
-               
+               // adding objects to panels
         suPl.add(intro);
         suPl.add(FirstName);
         suPl.add(fntf);
@@ -130,27 +130,30 @@ public class RegistrationApplication extends JFrame implements ActionListener{
 		siPl.add(btn4);
 	}
 	@Override
+	// events to happen when buttons are clicked
 	public void actionPerformed(ActionEvent event) {
 		// TODO Auto-generated method stub
+		// for button SignUp
 		if(event.getSource()==btn1) {
 			int x = 0;
             String s1 = fntf.getText();
             String s2 = lntf.getText();
             String s5 = emtf.getText();
             
-            String s7 = state.getText();
+            String s7 = sttf.getText();
  
             char[] s3 = p1.getPassword();
             char[] s4 = p2.getPassword(); 
             String s8 = new String(s3);
             String s9 = new String(s4);
-            
+            // checking if all important arfields are filled or not
             if(s1.isEmpty()||s2.isEmpty()||s8.isEmpty()||s5.isEmpty()||s7.isEmpty()||s9.isEmpty()) {
             	JOptionPane.showMessageDialog(btn1, "Please fill all important fields");
             }  
+            // checking if password
             else if (s8.equals(s9)) {
             
-		
+		    // storing data in database
 				try{  
 					Class.forName("com.mysql.jdbc.Driver");  
 					Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/ravi?useSSL=false","root","00lavi00");
@@ -160,7 +163,7 @@ public class RegistrationApplication extends JFrame implements ActionListener{
 	                  ps.setString(3, s8);
 	                  ps.setString(4, s5);
 	                  ps.setString(5, s7);
-	                  
+	                  // sending email and also checks if email exists or not
 	                  String to = s5;
                       String msg = "Your credentials are\n" + s1+ "\n"+ s2 + "\n" + s8+ "\n" + s4+ "\n" + s7+ "\n";
                       send(btn1,to,msg);
@@ -173,6 +176,7 @@ public class RegistrationApplication extends JFrame implements ActionListener{
 	                      
 	                  }
 	              }
+				//checks if email exists or not
 				catch (MySQLIntegrityConstraintViolationException e) 
 	              {
 					JOptionPane.showMessageDialog(btn1, "email already exists");
@@ -182,11 +186,13 @@ public class RegistrationApplication extends JFrame implements ActionListener{
 	                  System.out.println(ex);
 	              }
             }
+            
             else
 		         {
 		              JOptionPane.showMessageDialog(btn1, "Password Does Not Match");
 		          } 
 		} 
+		// for button clear in signup panel
         else if(event.getSource()==btn2) {
      
           fntf.setText("");
@@ -197,10 +203,12 @@ public class RegistrationApplication extends JFrame implements ActionListener{
           
           sttf.setText("");
             }
+		// for button signin in signin panel
         else if(event.getSource()==btn3) {
         	String s1 = em2tf.getText();
         	char[] s2 = p3.getPassword();
         	String b = new String(s2);
+        	// retrives data
         	try {
 				Class.forName("com.mysql.jdbc.Driver");
 				Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/ravi?useSSL=false","root","00lavi00");
@@ -224,6 +232,7 @@ public class RegistrationApplication extends JFrame implements ActionListener{
 			
         	
         }
+		// for clear button in signin pannel
         else if(event.getSource()==btn4) {
         	em2tf.setText("");
         	p3.setText("");
@@ -242,7 +251,7 @@ public class RegistrationApplication extends JFrame implements ActionListener{
         Session session = Session.getDefaultInstance(props,    
          new javax.mail.Authenticator() {    
          protected PasswordAuthentication getPasswordAuthentication() {    
-         return new PasswordAuthentication("ravikodali0@gmail.com","@@ravi@@");  
+         return new PasswordAuthentication("testingpurpoes@gmail.com","00lavi00");  
          }    
         });    
            
